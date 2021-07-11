@@ -58,7 +58,7 @@ namespace Microsoft.AspNetCore.Server.Kestrel.Core.Internal
                 _inner.Abort(abortReason);
             }
 
-            public override async ValueTask<ConnectionContext?> AcceptAsync(CancellationToken cancellationToken = default)
+            public override async ValueTask<MultiplexedStreamContext?> AcceptAsync(CancellationToken cancellationToken = default)
             {
                 var context = await _inner.AcceptAsync(cancellationToken);
                 if (context != null)
@@ -68,7 +68,7 @@ namespace Microsoft.AspNetCore.Server.Kestrel.Core.Internal
                 return context;
             }
 
-            public override async ValueTask<ConnectionContext> ConnectAsync(IFeatureCollection? features = null, CancellationToken cancellationToken = default)
+            public override async ValueTask<MultiplexedStreamContext> ConnectAsync(IFeatureCollection? features = null, CancellationToken cancellationToken = default)
             {
                 var context = await _inner.ConnectAsync(features, cancellationToken);
                 context = new LoggingConnectionContext(context, _logger);
@@ -87,7 +87,7 @@ namespace Microsoft.AspNetCore.Server.Kestrel.Core.Internal
         /// <summary>
         /// Wraps transport with <see cref="LoggingDuplexPipe"/>.
         /// </summary>
-        private class LoggingConnectionContext : ConnectionContext
+        private class LoggingConnectionContext : MultiplexedStreamContext
         {
             private readonly ConnectionContext _inner;
             private readonly ILogger _logger;

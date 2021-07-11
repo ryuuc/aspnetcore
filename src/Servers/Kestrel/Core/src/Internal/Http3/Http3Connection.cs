@@ -213,6 +213,8 @@ namespace Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http3
             }
         }
 
+        private static readonly object Http3StreamKey = new object();
+
         public async Task ProcessRequestsAsync<TContext>(IHttpApplication<TContext> application) where TContext : notnull
         {
             // An endpoint MAY avoid creating an encoder stream if it's not going to
@@ -270,16 +272,18 @@ namespace Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http3
                             // Request stream
                             UpdateHighestStreamId(streamIdFeature.StreamId);
 
+                            Http3Stream<TContext> stream;
+
                             // Check whether there is an existing HTTP/3 stream on the transport stream.
                             // A stream will only be cached if the transport stream itself is reused.
-                            var stream = streamContext.Features.Get<ICachedHttp3StreamFeature<TContext>>()?.CachedStream;
-                            if (stream == null)
+                            if (!streamContext.PersistentState.TryGetValue(Http3StreamKey, out var s))
                             {
                                 stream = new Http3Stream<TContext>(application, CreateHttpStreamContext(streamContext));
-                                streamContext.Features.Set<ICachedHttp3StreamFeature<TContext>>(new DefaultCachedHttp3StreamFeature<TContext>(stream));
+                                streamContext.PersistentState.Add(Http3StreamKey, stream);
                             }
                             else
                             {
+                                stream = (Http3Stream<TContext>)s!;
                                 stream.InitializeWithExistingContext(streamContext.Transport);
                             }
 

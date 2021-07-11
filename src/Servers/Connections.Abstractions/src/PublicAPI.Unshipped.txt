@@ -23,5 +23,9 @@ Microsoft.AspNetCore.Connections.MultiplexedConnectionBuilder.Use(System.Func<Mi
 Microsoft.AspNetCore.Connections.MultiplexedConnectionContext
 Microsoft.AspNetCore.Connections.MultiplexedConnectionContext.MultiplexedConnectionContext() -> void
 Microsoft.AspNetCore.Connections.MultiplexedConnectionDelegate
-abstract Microsoft.AspNetCore.Connections.MultiplexedConnectionContext.AcceptAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.ValueTask<Microsoft.AspNetCore.Connections.ConnectionContext?>
-abstract Microsoft.AspNetCore.Connections.MultiplexedConnectionContext.ConnectAsync(Microsoft.AspNetCore.Http.Features.IFeatureCollection? features = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.ValueTask<Microsoft.AspNetCore.Connections.ConnectionContext!>
+Microsoft.AspNetCore.Connections.MultiplexedStreamContext
+Microsoft.AspNetCore.Connections.MultiplexedStreamContext.MultiplexedStreamContext() -> void
+abstract Microsoft.AspNetCore.Connections.MultiplexedConnectionContext.AcceptAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.ValueTask<Microsoft.AspNetCore.Connections.MultiplexedStreamContext?>
+abstract Microsoft.AspNetCore.Connections.MultiplexedConnectionContext.ConnectAsync(Microsoft.AspNetCore.Http.Features.IFeatureCollection? features = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.ValueTask<Microsoft.AspNetCore.Connections.MultiplexedStreamContext!>
+virtual Microsoft.AspNetCore.Connections.MultiplexedStreamContext.PersistentState.get -> System.Collections.Generic.IDictionary<object!, object?>!
+virtual Microsoft.AspNetCore.Connections.MultiplexedStreamContext.PersistentState.set -> void

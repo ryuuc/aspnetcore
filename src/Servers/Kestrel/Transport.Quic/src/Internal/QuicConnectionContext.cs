@@ -72,7 +72,7 @@ namespace Microsoft.AspNetCore.Server.Kestrel.Transport.Quic.Internal
             _closeTask = _connection.CloseAsync(errorCode: Error).AsTask();
         }
 
-        public override async ValueTask<ConnectionContext?> AcceptAsync(CancellationToken cancellationToken = default)
+        public override async ValueTask<MultiplexedStreamContext?> AcceptAsync(CancellationToken cancellationToken = default)
         {
             try
             {
@@ -93,6 +93,11 @@ namespace Microsoft.AspNetCore.Server.Kestrel.Transport.Quic.Internal
                 if (context == null)
                 {
                     context = new QuicStreamContext(this, _context);
+                }
+                else
+                {
+                    context.ResetFeatureCollection();
+                    context.ResetItems();
                 }
 
                 context.Initialize(stream);
@@ -136,7 +141,7 @@ namespace Microsoft.AspNetCore.Server.Kestrel.Transport.Quic.Internal
             }
         }
 
-        public override ValueTask<ConnectionContext> ConnectAsync(IFeatureCollection? features = null, CancellationToken cancellationToken = default)
+        public override ValueTask<MultiplexedStreamContext> ConnectAsync(IFeatureCollection? features = null, CancellationToken cancellationToken = default)
         {
             QuicStream quicStream;
 
@@ -165,7 +170,7 @@ namespace Microsoft.AspNetCore.Server.Kestrel.Transport.Quic.Internal
 
             _log.ConnectedStream(context);
 
-            return new ValueTask<ConnectionContext>(context);
+            return new ValueTask<MultiplexedStreamContext>(context);
         }
 
         internal bool TryReturnStream(QuicStreamContext stream)

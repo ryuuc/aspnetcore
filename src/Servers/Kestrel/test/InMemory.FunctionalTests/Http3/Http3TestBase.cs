@@ -474,7 +474,7 @@ namespace Microsoft.AspNetCore.Server.Kestrel.Core.Tests
             internal TaskCompletionSource _onStreamCompletedTcs = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
             internal TaskCompletionSource _onHeaderReceivedTcs = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
 
-            internal ConnectionContext StreamContext { get; }
+            internal MultiplexedStreamContext StreamContext { get; }
             internal IProtocolErrorCodeFeature _protocolErrorCodeFeature;
             internal DuplexPipe.DuplexPipePair _pair;
             internal Http3TestBase _testBase;
@@ -860,7 +860,7 @@ namespace Microsoft.AspNetCore.Server.Kestrel.Core.Tests
 
         internal class TestMultiplexedConnectionContext : MultiplexedConnectionContext, IConnectionLifetimeNotificationFeature, IConnectionLifetimeFeature, IConnectionHeartbeatFeature, IProtocolErrorCodeFeature
         {
-            public readonly Channel<ConnectionContext> ToServerAcceptQueue = Channel.CreateUnbounded<ConnectionContext>(new UnboundedChannelOptions
+            public readonly Channel<MultiplexedStreamContext> ToServerAcceptQueue = Channel.CreateUnbounded<MultiplexedStreamContext>(new UnboundedChannelOptions
             {
                 SingleReader = true,
                 SingleWriter = true
@@ -912,7 +912,7 @@ namespace Microsoft.AspNetCore.Server.Kestrel.Core.Tests
                 ToClientAcceptQueue.Writer.TryComplete();
             }
 
-            public override async ValueTask<ConnectionContext> AcceptAsync(CancellationToken cancellationToken = default)
+            public override async ValueTask<MultiplexedStreamContext> AcceptAsync(CancellationToken cancellationToken = default)
             {
                 while (await ToServerAcceptQueue.Reader.WaitToReadAsync())
                 {
@@ -925,14 +925,14 @@ namespace Microsoft.AspNetCore.Server.Kestrel.Core.Tests
                 return null;
             }
 
-            public override ValueTask<ConnectionContext> ConnectAsync(IFeatureCollection features = null, CancellationToken cancellationToken = default)
+            public override ValueTask<MultiplexedStreamContext> ConnectAsync(IFeatureCollection features = null, CancellationToken cancellationToken = default)
             {
                 var testStreamContext = new TestStreamContext(canRead: true, canWrite: false, _testBase);
                 testStreamContext.Initialize(_testBase.GetStreamId(0x03));
 
                 var stream = _testBase.OnCreateServerControlStream?.Invoke(testStreamContext) ?? new Http3ControlStream(_testBase, testStreamContext);
                 ToClientAcceptQueue.Writer.WriteAsync(stream);
-                return new ValueTask<ConnectionContext>(stream.StreamContext);
+                return new ValueTask<MultiplexedStreamContext>(stream.StreamContext);
             }
 
             public void OnHeartbeat(Action<object> action, object state)
@@ -945,7 +945,7 @@ namespace Microsoft.AspNetCore.Server.Kestrel.Core.Tests
             }
         }
 
-        internal class TestStreamContext : ConnectionContext, IStreamDirectionFeature, IStreamIdFeature, IProtocolErrorCodeFeature
+        internal class TestStreamContext : MultiplexedStreamContext, IStreamDirectionFeature, IStreamIdFeature, IProtocolErrorCodeFeature
         {
             private readonly Http3TestBase _testBase;
 

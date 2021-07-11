@@ -210,12 +210,12 @@ namespace Microsoft.AspNetCore.Testing
             {
             }
 
-            public override ValueTask<ConnectionContext> AcceptAsync(CancellationToken cancellationToken = default)
+            public override ValueTask<MultiplexedStreamContext> AcceptAsync(CancellationToken cancellationToken = default)
             {
                 return default;
             }
 
-            public override ValueTask<ConnectionContext> ConnectAsync(IFeatureCollection features = null, CancellationToken cancellationToken = default)
+            public override ValueTask<MultiplexedStreamContext> ConnectAsync(IFeatureCollection features = null, CancellationToken cancellationToken = default)
             {
                 return default;
             }

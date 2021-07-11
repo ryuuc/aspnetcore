@@ -45,7 +45,6 @@ namespace Microsoft.AspNetCore.Connections
             _currentIConnectionSocketFeature = null;
         }
 
-        // Internal for testing
         internal void ResetFeatureCollection()
         {
             FastReset();

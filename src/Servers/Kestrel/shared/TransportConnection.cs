@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.Http.Features;
 
 namespace Microsoft.AspNetCore.Connections
 {
-    internal abstract partial class TransportConnection : ConnectionContext
+    internal abstract partial class TransportConnection : MultiplexedStreamContext
     {
         private IDictionary<object, object?>? _items;
         private string? _connectionId;
@@ -52,6 +52,11 @@ namespace Microsoft.AspNetCore.Connections
             {
                 _items = value;
             }
+        }
+
+        internal void ResetItems()
+        {
+            _items?.Clear();
         }
 
         public override CancellationToken ConnectionClosed { get; set; }
