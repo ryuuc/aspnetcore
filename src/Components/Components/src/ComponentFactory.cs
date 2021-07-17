@@ -86,7 +86,7 @@ namespace Microsoft.AspNetCore.Components
                     var serviceInstance = serviceProvider.GetService(propertyType);
                     if (serviceInstance == null)
                     {
-                        throw new InvalidOperationException($"Cannot provide a value for property " +
+                        throw new InvalidOperationException("Cannot provide a value for property " +
                             $"'{propertyName}' on type '{type.FullName}'. There is no " +
                             $"registered service of type '{propertyType}'.");
                     }

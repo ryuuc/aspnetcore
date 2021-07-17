@@ -95,7 +95,7 @@ namespace Microsoft.AspNetCore.Http2Cat
                         EnabledSslProtocols = SslProtocols.Tls12,
                     }, CancellationToken.None);
 
-                    _logger.LogInformation($"TLS handshake completed successfully.");
+                    _logger.LogInformation("TLS handshake completed successfully.");
                 }
 
                 var http2Utilities = new Http2Utilities(context, _logger, _stopTokenSource.Token);

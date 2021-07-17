@@ -212,7 +212,7 @@ namespace Microsoft.AspNetCore.Authentication
             var provider = services.BuildServiceProvider();
             var azureADOptionsMonitor = provider.GetService<IOptionsMonitor<AzureADOptions>>();
 
-            var expectedMessage = $"The Open ID Connect scheme 'AzureADOpenID' can't be associated with the Azure Active Directory scheme 'Custom'. " +
+            var expectedMessage = "The Open ID Connect scheme 'AzureADOpenID' can't be associated with the Azure Active Directory scheme 'Custom'. " +
                 "The Open ID Connect scheme 'AzureADOpenID' is already mapped to the Azure Active Directory scheme 'AzureAD'";
 
             // Act & Assert

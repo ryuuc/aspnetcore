@@ -162,7 +162,7 @@ namespace Microsoft.Extensions.Internal
             app.Argument("first", "First argument", multipleValues: true);
             var ex = Assert.Throws<InvalidOperationException>(() => app.Argument("second", "Second argument"));
 
-            Assert.Contains($"The last argument 'first' accepts multiple values. No more argument can be added.",
+            Assert.Contains("The last argument 'first' accepts multiple values. No more argument can be added.",
                 ex.Message);
         }
 

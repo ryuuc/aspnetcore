@@ -123,7 +123,7 @@ namespace Microsoft.AspNetCore.E2ETesting
 
             if (!Directory.Exists(trackingFolder))
             {
-                throw new InvalidOperationException($"Invalid tracking folder. Set the 'SeleniumProcessTrackingFolder' MSBuild property to a valid folder.");
+                throw new InvalidOperationException("Invalid tracking folder. Set the 'SeleniumProcessTrackingFolder' MSBuild property to a valid folder.");
             }
 
             Process process = null;

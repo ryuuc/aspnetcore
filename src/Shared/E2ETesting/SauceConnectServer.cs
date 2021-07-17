@@ -100,7 +100,7 @@ namespace Microsoft.AspNetCore.E2ETesting
             var trackingFolder = GetProcessTrackingFolder();
             if (!Directory.Exists(trackingFolder))
             {
-                throw new InvalidOperationException($"Invalid tracking folder. Set the 'SauceConnectProcessTrackingFolder' MSBuild property to a valid folder.");
+                throw new InvalidOperationException("Invalid tracking folder. Set the 'SauceConnectProcessTrackingFolder' MSBuild property to a valid folder.");
             }
 
             Process process = null;

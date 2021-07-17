@@ -59,7 +59,7 @@ namespace RunTests
                 Console.WriteLine($"Setting PLAYWRIGHT_DRIVER_PATH: {playrightDriver}");
                 EnvironmentVariables.Add("PLAYWRIGHT_DRIVER_PATH", playrightDriver);
 #else
-                Console.WriteLine($"Skipping setting PLAYWRIGHT_BROWSERS_PATH");
+                Console.WriteLine("Skipping setting PLAYWRIGHT_BROWSERS_PATH");
 #endif
 
                 Console.WriteLine($"Creating nuget restore directory: {nugetRestore}");
